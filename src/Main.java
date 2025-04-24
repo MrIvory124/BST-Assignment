@@ -25,6 +25,6 @@ public class Main {
         System.out.println("Min: " + bst.getMinimum());
         System.out.println("Max: " + bst.getMaximum());
 
-
+        // test
     }
 }

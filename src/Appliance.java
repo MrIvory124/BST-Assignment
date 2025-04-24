@@ -5,6 +5,12 @@ public class Appliance {
     private float price;
     private String name;
 
+
+    /**
+     * @param category
+     * @param price
+     * @param name
+     */
     public Appliance(String category, float price, String name) {
         this.category = category;
         this.price = price;
@@ -23,13 +29,20 @@ public class Appliance {
         return name;
     }
 
+    /** Compares 2 appliance objects. Starts lexicographically, then moves to price (cheap to expensive), finishes with name lexicographically.
+     * @param other The other appliance to be checked against this one
+     * @return negative means less, 0 means same, positive means greater than*/
     public int compareTo(Appliance other) {
-        int categoryCompare = getCategory().compareTo(other.getCategory());
+        // compare categories
+        int categoryCompare = getCategory().compareToIgnoreCase(other.getCategory());
+
         if (categoryCompare == 0) {
             if (getPrice() == other.getPrice()) {
                 return getName().compareTo(other.getName());
             }
-            return getPrice() < other.getPrice() ? -1 : 1;
+            else{
+                return getPrice() < other.getPrice() ? -1 : 1;
+            }
         }
         return categoryCompare;
     }

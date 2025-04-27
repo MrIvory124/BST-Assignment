@@ -12,8 +12,6 @@ public class ApplianceLookup {
     final String ANSI_BLUE = "\u001B[94m";
     final String ANSI_YELLOW = "\u001B[33m";
 
-    final int WAITTIME = 5;
-
     // console related things
     boolean isValidConsole = true;
     final Console console;
@@ -89,7 +87,9 @@ public class ApplianceLookup {
         return false;
     }
 
-    /**Method for handling the reading of the csv assuming its valid*/
+    /**
+     * Method for handling the reading of the csv assuming its valid
+     */
     public boolean readCSV(String filePath) {
         clearScreen();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -101,7 +101,7 @@ public class ApplianceLookup {
                 try {
                     current = new Appliance(values[1], Float.parseFloat(values[2]), values[0]);
                     applianceBST.insert(current);
-                    System.out.println(ANSI_GREEN + "Added appliance " + current );
+                    System.out.println(ANSI_GREEN + "Added appliance " + current);
                 } catch (Exception e) {
                     printRed("Invalid appliance " + Arrays.toString(values));
                 }
@@ -134,23 +134,31 @@ public class ApplianceLookup {
         System.out.println("7." + ANSI_RED + " Exit" + ANSI_RESET);
     }
 
-    /** This is the main menu/entry into user input in the program.*/
+    /**
+     * This is the main menu/entry into user input in the program.
+     */
     public void handleMenuInput() {
         while (true) {
             System.out.print("Enter your option: ");
             switch (console.readLine().trim()) {
                 case "1":
-                    searchInputAppliance(); return;
+                    searchInputAppliance();
+                    return;
                 case "2":
-                    addNewAppliance(); return;
+                    addNewAppliance();
+                    return;
                 case "3":
-                    removeAppliance(); return;
+                    removeAppliance();
+                    return;
                 case "4":
-                    printSelectedCategory(); return;
+                    printSelectedCategory();
+                    return;
                 case "5":
-                    printSelectedCategoryWithRange(); return;
+                    printSelectedCategoryWithRange();
+                    return;
                 case "6":
-                    printAllStoredItems(); return;
+                    printAllStoredItems();
+                    return;
                 case "7", "exit", "quit", "Exit", "close":
                     closeProgram();
                     return;
@@ -166,6 +174,9 @@ public class ApplianceLookup {
         }
     }
 
+    /// Below are all the methods that are options in the menu
+
+    /**Added this to make it easier for the user to see all the items in the tree*/
     private void printAllStoredItems() {
         clearScreen();
         System.out.println(ANSI_BLUE + "Appliance List" + ANSI_RESET);
@@ -174,22 +185,19 @@ public class ApplianceLookup {
         promptToContinue();
     }
 
-    /// Below are all the methods that are options in the menu
     private void searchInputAppliance() {
         clearScreen();
 
         // get user input
         Appliance current = getAppliance();
 
-        //process input
+        // process input
         try {
             boolean exists = applianceBST.search(current);
             // print the output, with color changed for the true or false
             String color = exists ? ANSI_GREEN : ANSI_RED;
-            System.out.printf("Does the appliance "
-                    + ANSI_BLUE + current.getName() + ANSI_RESET
-                    + " exist? "
-                    + color + exists + ANSI_RESET);
+            // the ide reports that .getname here might cause an error due to null but error handling is handled above for this so it can be ignored
+            System.out.printf("Does the appliance " + ANSI_BLUE + current.getName() + ANSI_RESET + " exist? " + color + exists + ANSI_RESET);
             System.out.println();
             promptToContinue();
         } catch (Exception e) {
@@ -220,7 +228,9 @@ public class ApplianceLookup {
 
         if (current != null) {
             try {
-                if (!applianceBST.search(current)){
+                // if the user entered an appliance that doesn't exist, do not proceed with execution
+                /// I am aware this is less efficient than just attempting to remove it, but it's better for UX
+                if (!applianceBST.search(current)) {
                     printGreen("Appliance " + ANSI_BLUE + current.getName() + ANSI_GREEN + " does not exist");
                     promptToContinue();
                     return;
@@ -228,7 +238,6 @@ public class ApplianceLookup {
                 applianceBST.remove(current);
                 printGreen("Removed appliance " + ANSI_BLUE + current.getName() + ANSI_GREEN + " with category and price: " + ANSI_BLUE + current.getCategory() + ", " + current.getPrice());
                 promptToContinue();
-                return;
             } catch (Exception e) {
                 printRed("Error removing: " + e.getMessage());
                 System.out.println("Please try again");
@@ -261,16 +270,16 @@ public class ApplianceLookup {
 
         // get user input
         String category;
-        while(true){
+        while (true) {
             clearScreen();
             printGray("Type '!exit' to exit");
             category = console.readLine("Enter the category you want to print: ");
             if (category.isEmpty()) {
                 printRed("Please enter a valid category");
                 sleep(1);
-            }else if (category.equals("!exit")) {
+            } else if (category.equals("!exit")) {
                 return;
-            }else{
+            } else {
                 break;
             }
         }
@@ -303,22 +312,21 @@ public class ApplianceLookup {
         // switch into the case where it has ranges
         if (hasUpper && hasLower) {
             applianceBST.printCategoryWithPriceRange(category, lower, upper);
-        }
-        else if (hasUpper && !hasLower) {
+        } else if (hasUpper && !hasLower) {
             applianceBST.printCategoryBelowPrice(category, upper);
-        }
-        else if (!hasUpper && hasLower) {
+        } else if (!hasUpper && hasLower) {
             applianceBST.printCategoryAbovePrice(category, lower);
-        }else { // in the case they entered no range, warn them but still show results
+        } else { // in the case they entered no range, warn them but still show results
             applianceBST.printCategory(category);
             printYellow("WARN: In future if no range, use option 4 instead");
         }
         promptToContinue();
-    
+
     }
 
-    private Float getFloatInput(String type){
-        while (true){
+    /**This method is a helper method to get the input for the upper and lower bounds*/
+    private Float getFloatInput(String type) {
+        while (true) {
             clearScreen();
             System.out.println(type + " range?");
             printGray("Format of xxxx.xx \nLeave this empty to have no range.");
@@ -329,7 +337,7 @@ public class ApplianceLookup {
             } else {
                 try {
                     return Float.parseFloat(inputRange);
-                }catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     printRed("Please enter a valid number...");
                     promptToContinue();
                 }
@@ -338,21 +346,29 @@ public class ApplianceLookup {
     }
 
     ///  Below are all the methods that are used for functionality of the console
-    ///  If we were permitted to use more classes these would go in a seperate class
+    ///  If we were permitted to use more classes these would go in a separate class
 
-    /**Method for validating the input of an appliance from the user*/
+    /**
+     * Method for validating the input of an appliance from the user
+     */
     private Appliance getAppliance() {
         boolean validInput = false;
         Appliance current = null;
-        while (!validInput){
+        while (!validInput) {
             clearScreen();
             printGray("Type '!exit' to exit at any time");
             String input = console.readLine("Input appliance name: ");
-            if (Objects.equals(input, "!exit")){ return null; }
+            if (Objects.equals(input, "!exit")) {
+                return null;
+            }
             String input1 = console.readLine("Input appliance price (format: xxxx.xx): ");
-            if (Objects.equals(input1, "!exit")){ return null; }
+            if (Objects.equals(input1, "!exit")) {
+                return null;
+            }
             String input2 = console.readLine("Input appliance category: ");
-            if (Objects.equals(input2, "!exit")){ return null; }
+            if (Objects.equals(input2, "!exit")) {
+                return null;
+            }
 
             try {
                 float input1Converted = Float.parseFloat(input1);
@@ -361,8 +377,7 @@ public class ApplianceLookup {
                 }
                 current = new Appliance(input2, input1Converted, input);
                 validInput = true;
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 printRed("Invalid data entered:\n" + e.getMessage());
                 promptToContinue();
             }
@@ -370,6 +385,7 @@ public class ApplianceLookup {
         return current; // never returns null because it does not exist without valid appliance object
     }
 
+    /**Cleanly exits the program. Only fully runs once user confirms*/
     private void closeProgram() {
         String confirm = console.readLine("Are you sure you want to exit? (y/n): ");
         if (confirm.equalsIgnoreCase("y")) {
@@ -378,14 +394,15 @@ public class ApplianceLookup {
 
             System.out.println(goodbye);
             System.exit(0);
-        }else{
+        } else {
             printYellow("Returning to main menu");
             provideCountdown(2);
             clearScreen();
         }
     }
 
-    private void provideCountdown(int seconds){
+    /**Used in a couple of places to automatically return the user back to the main menu*/
+    private void provideCountdown(int seconds) {
         System.out.println();
         for (int i = seconds; i > 0; i--) {
             System.out.print("                                  \rResetting page in: " + ANSI_YELLOW + i + "s" + ANSI_RESET);
@@ -393,9 +410,12 @@ public class ApplianceLookup {
         }
     }
 
-    /**Method for doing sleeping in a thread
-     * @param seconds The number of seconds you want the program to sleep for*/
-    private void sleep(double seconds){
+    /**
+     * Method for doing sleeping in a thread
+     *
+     * @param seconds The number of seconds you want the program to sleep for
+     */
+    private void sleep(double seconds) {
         try {
             Thread.sleep((long) (seconds * 1000));
         } catch (InterruptedException e) {
@@ -404,12 +424,15 @@ public class ApplianceLookup {
         }
     }
 
-    /**A method that waits for the user to confirm they are ready to move on
-     * @implNote Currently only waits for y to be typed, in future could pass a letter to it*/
+    /**
+     * A method that waits for the user to confirm they are ready to move on
+     *
+     * @implNote Waits for enter to be pressed, can be rewritten to allow for typing of confirmation
+     */
     private void promptToContinue() {
         console.readLine("Press Enter to continue...");
     }
-    
+
     /**
      * Obtains the OS, prints special characters and resets the console
      */
@@ -430,19 +453,19 @@ public class ApplianceLookup {
     }
 
     /// Section for formatting of words into the console
-    private void printRed(String c){
+    private void printRed(String c) {
         System.out.println(ANSI_RED + c + ANSI_RESET);
     }
 
-    private void printGreen(String c){
+    private void printGreen(String c) {
         System.out.println(ANSI_GREEN + c + ANSI_RESET);
     }
 
-    private void printGray(String c){
+    private void printGray(String c) {
         System.out.println(ANSI_GRAY + c + ANSI_RESET);
     }
 
-    private void printYellow(String c){
+    private void printYellow(String c) {
         System.out.println(ANSI_YELLOW + c + ANSI_RESET);
     }
 

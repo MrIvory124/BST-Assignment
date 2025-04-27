@@ -3,7 +3,7 @@ public class Main {
         ApplianceLookup console = new ApplianceLookup();
 
         // this test below is to show output matches the example output given in assignment
-        // if you are testing something more extensive change the below var to 'false' to skip
+        // if you are testing something more extensive change the below var to false to skip
         if (false) {
 
             System.out.println("Printing test output from examples");
@@ -32,6 +32,12 @@ public class Main {
             System.out.println("Has element " + a.getName() + ": " + bst.search(a));
 
             System.out.println("Sorted elements");
+            bst.print();
+
+            System.out.println("Testing remove");
+            bst.remove(a);
+
+            System.out.println("Printing tree for remove");
             bst.print();
 
             System.out.println("Height: " + bst.getHeight());
@@ -64,12 +70,13 @@ public class Main {
 
         }
 
-
-        console.printMenu();
-        try {
-            console.handleMenuInput();
-        } catch (Exception e) {
-            System.out.println("Menu interrupted");
+        while(true) {
+            console.printMenu();
+            try {
+                console.handleMenuInput();
+            } catch (Exception e) {
+                System.out.println("Menu interrupted");
+            }
         }
 
     }

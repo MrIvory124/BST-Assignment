@@ -39,10 +39,10 @@ public class ApplianceBST {
         // cases for recursion
         if (current == null) { return null; }
 
-        if (current.appliance.compareTo(a) < 0) {
+        if (a.compareTo(current.appliance) < 0) {
             current.left = removeR(a, current.left);
         }
-        else if (current.appliance.compareTo(a) > 0) {
+        else if (a.compareTo(current.appliance) > 0) {
             current.right = removeR(a, current.right);
         }
         else {
@@ -155,7 +155,7 @@ public class ApplianceBST {
 
     /**This prints the BST currently using InOrder traversal*/
     public void print() {
-        System.out.println("Printing in order");
+        //System.out.println("Printing in order");
         printInOrder(root);
     }
 

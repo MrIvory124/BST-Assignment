@@ -1,15 +1,13 @@
 /**@author RyanBulcraig*/
 public class Appliance {
 
-    private String category;
-    private float price;
-    private String name;
+    private final String category;
+    private final float price;
+    private final String name;
 
 
-    /**
-     * @param category
-     * @param price
-     * @param name
+    /** the constructor method for this class.
+     * Order is 1. Category, 2. Price, 3. Name
      */
     public Appliance(String category, float price, String name) {
         this.category = category;
@@ -48,7 +46,7 @@ public class Appliance {
     }
 
     public String toString(){
-        return "%-20s | %-20s | %s".formatted(getCategory(), getName(), getPrice());
+        return "%-20s | %-40s | %s".formatted(getCategory(), getName(), getPrice());
     }
 
 }

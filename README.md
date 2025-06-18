@@ -12,10 +12,10 @@ This is based on an assignment that I did in university and I am rather proud of
 
 ## File Overview
 
-* **Main.java** — Entry point. Handles user interaction.
-* **Appliance.java** — Defines the appliance object structure, as per assignment is the main entry method.
-* **ApplianceBST.java** — Manages appliance data using a binary search tree.
-* **ApplianceLookup.java** — Acts as the interface between the user input and BST logic.
+* **Main.java** - Entry point. Handles user interaction.
+* **Appliance.java** - Defines the appliance object structure, as per assignment is the main entry method.
+* **ApplianceBST.java** - Manages appliance data using a binary search tree.
+* **ApplianceLookup.java** - Acts as the interface between the user input and BST logic.
 
 ## How to Run
 
@@ -37,7 +37,7 @@ This is based on an assignment that I did in university and I am rather proud of
 
 ## Notes
 
-* Data is preloaded or created at runtime—there's no external database.
+* Data is preloaded or created at runtime - there's no external database. All data must be in csv format, see example file included. 
 * IDs must be unique for the BST to function properly.
 * If an ID isn’t found, the user is notified.
 

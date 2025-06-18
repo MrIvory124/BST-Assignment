@@ -12,10 +12,10 @@ This is based on an assignment that I did in university and I am rather proud of
 
 ## File Overview
 
-* **Main.java** - Entry point. Handles user interaction.
-* **Appliance.java** - Defines the appliance object structure, as per assignment is the main entry method.
+* **Main.java** - Entry point. Handles user interaction. Was only used for testing
+* **Appliance.java** - Defines the appliance object structure.
 * **ApplianceBST.java** - Manages appliance data using a binary search tree.
-* **ApplianceLookup.java** - Acts as the interface between the user input and BST logic.
+* **ApplianceLookup.java** - Acts as the interface between the user input and BST logic, as per assignment is the main entry method.
 
 ## How to Run
 
